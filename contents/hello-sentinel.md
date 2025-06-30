@@ -3,7 +3,7 @@
 ここでは、最もシンプルなポリシーを作成し、Sentinel の基本的な考え方を学びます。
 
 Sentinel でのポリシー開発では、`sentinel` CLI を利用します。 \
-Sentinel CLI がインストールされていない場合には、[こちら](https://developer.hashicorp.com/sentinel/install) からダウンロードをしてください。
+Sentinel CLI がインストールされていない場合には、[こちら](https://developer.hashicorp.com/sentinel/install) からダウンロードをしてください。 \
 ダウンロードしたら unzip して実行権限を付与し、パスを通します。下記は macOS の手順です。
 
 ```console
@@ -71,10 +71,10 @@ Pass - hello.sentinel
 ```
 
 出力から `hello.sentinel` が評価され、作成したポリシーコードが準拠している（Pass している）ということがわかります。 \
-次に、もう一つ以下のようなポリシーコードを作成して、再度、評価してみます。
+次に、`hello.sentinel` のポリシーコードを以下のように変更して、再度、評価してみます。
 
 ```shell
-$ cat <<EOF > hello2.sentinel
+$ cat <<EOF > hello.sentinel
 main = rule {
   true == false
 }
