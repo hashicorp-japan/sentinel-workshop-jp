@@ -23,7 +23,7 @@ HashiCorp Enterprise 製品との親和性が高い機能を持ち合わせて�
 ## アジェンダ
 * [初めての Sentinel](contents/hello-sentinel.md)
 * [Sentinel 設定ファイル](contents/sentinel-configurations.md)
-* [First policy](contents/first-policy.md)
+* [Sentinel Language](contents/language-features.md)
 * [Import 1: Standard imports](contents/imports-standard.md)
 * [Import 2: Static imports](contents/imports-static.md)
 * [Import 3: Module imports](contents/imports-modules.md)
