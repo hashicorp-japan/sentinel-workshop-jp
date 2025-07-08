@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
     - "README.md"
-    # - "contents/**/*.md"
+    - "contents/**/*.md"
   workflow_dispatch:
 
 permissions:
