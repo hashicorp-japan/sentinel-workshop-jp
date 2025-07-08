@@ -67,9 +67,9 @@ sentinel.hcl の policy では、`source` により評価するポリシーコ�
 
 <details><summary>Azure の場合はこちら</summary>
 
-Computes: <https://github.com/hashicorp/policy-library-azure-compute-terraform>
-Networks: <https://github.com/hashicorp/policy-library-azure-networking-terraform>
-Storages: <https://github.com/hashicorp/policy-library-azure-storage-terraform>
+Computes: <https://github.com/hashicorp/policy-library-azure-compute-terraform> \
+Networks: <https://github.com/hashicorp/policy-library-azure-networking-terraform> \
+Storages: <https://github.com/hashicorp/policy-library-azure-storage-terraform> \
 Databases: <https://github.com/hashicorp/policy-library-azure-databases-terraform>
 
 </details>
