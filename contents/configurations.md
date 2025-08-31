@@ -63,6 +63,10 @@ sentinel.hcl の policy では、`source` により評価するポリシーコ�
 
 <details><summary>AWS の場合はこちら</summary>
 
+[CIS Benchmark](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/cis-aws-foundations-benchmark.html) 準拠: <https://github.com/hashicorp/policy-library-CIS-Policy-Set-for-AWS-Terraform> \
+[FSBP Benchmark](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/fsbp-standard.html) 準拠: <https://github.com/hashicorp/policy-library-FSBP-Policy-Set-for-AWS-Terraform> \
+Networks: <https://github.com/hashicorp/policy-library-aws-networking-terraform>
+
 </details>
 
 <details><summary>Azure の場合はこちら</summary>
@@ -75,6 +79,11 @@ Databases: <https://github.com/hashicorp/policy-library-azure-databases-terrafor
 </details>
 
 <details><summary>Google Cloud の場合はこちら</summary>
+
+Computes: <https://github.com/hashicorp/policy-library-gcp-compute-terraform> \
+Networks: <https://github.com/hashicorp/policy-library-gcp-networking-terraform> \
+Storages: <https://github.com/hashicorp/policy-library-gcp-storage-terraform> \
+Databases: <https://github.com/hashicorp/policy-library-gcp-databases-terraform>
 
 </details>
 
