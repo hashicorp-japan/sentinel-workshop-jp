@@ -1,0 +1,5 @@
+print("Sample Remote policy")
+
+main = rule {
+    true
+}

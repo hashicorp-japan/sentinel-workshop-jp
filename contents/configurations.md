@@ -53,7 +53,14 @@ sentinel.hcl の policy では、`source` により評価するポリシーコ�
 ここでは、このリポジトリをリモートとして、[`sentinel-workshop-jp/assets/sample-policies/remote-policy.sentinel`](../assets/sample-policies/remote-policy.sentinel) を取り込んでみましょう。
 
 ```shell
+$ cat >> sentinel.hcl <<EOF
+policy "remote" {
+    source = "git::https://github.com/hashicorp-japan/sentinel-workshop-jp//assets/sample-policies/remote-policy.sentinel"
+    enforcement_level = "advisory"
+}
+EOF
 
+$ sentinel apply
 ```
 
 また、HashiCorp がメンテナンスを行う GitHub リポジトリでは、主要クラウド環境向けの事前定義済みポリシーが用意されています。 \
@@ -62,6 +69,10 @@ sentinel.hcl の policy では、`source` により評価するポリシーコ�
 主要クラウド環境向けの定義済みポリシーコードも併せて GitHub リポジトリで公開されています。
 
 <details><summary>AWS の場合はこちら</summary>
+
+[CIS Benchmark](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/cis-aws-foundations-benchmark.html) 準拠: <https://github.com/hashicorp/policy-library-CIS-Policy-Set-for-AWS-Terraform> \
+[FSBP Benchmark](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/fsbp-standard.html) 準拠: <https://github.com/hashicorp/policy-library-FSBP-Policy-Set-for-AWS-Terraform> \
+Networks: <https://github.com/hashicorp/policy-library-aws-networking-terraform>
 
 </details>
 
@@ -76,11 +87,17 @@ Databases: <https://github.com/hashicorp/policy-library-azure-databases-terrafor
 
 <details><summary>Google Cloud の場合はこちら</summary>
 
+Computes: <https://github.com/hashicorp/policy-library-gcp-compute-terraform> \
+Networks: <https://github.com/hashicorp/policy-library-gcp-networking-terraform> \
+Storages: <https://github.com/hashicorp/policy-library-gcp-storage-terraform> \
+Databases: <https://github.com/hashicorp/policy-library-gcp-databases-terraform>
+
 </details>
 
 
 ## 参考リンク
 - [`-config-path` Option](https://developer.hashicorp.com/sentinel/docs/commands/apply#config-path)
+- [Remote sources](https://developer.hashicorp.com/sentinel/docs/configuration/remote-sources)
 - [Enforcement Level](https://developer.hashicorp.com/sentinel/docs/concepts/enforcement-levels)
 - [Configuration file reference](https://developer.hashicorp.com/sentinel/docs/configuration#configuration-file-reference)
 - [Policy Code Samples (GitHub)](https://github.com/hashicorp/terraform-sentinel-policies)
