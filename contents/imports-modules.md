@@ -8,7 +8,7 @@ Sentinel では、実装したポリシーコードの再利用性を高める�
 また、Sentinel では `func()` ブロックを利用して、ユーザ定義の関数を作成することが可能であるため、関数のみを定義した `*.sentinel` ファイルをモジュールとしてインポートすることもあります。 \
 これは共通的なロジックのみを別の `*.sentinel` ファイルとして切り出すことでモジュール化し、再利用している形になります。
 
-ここでは、[`runtime` import](https://developer.hashicorp.com/sentinel/docs/imports/runtime) を利用した関数を自作し、それをモジュールとしてインポートするポリシーコードを実装してみます。 \
+ここでは、[`runtime`](https://developer.hashicorp.com/sentinel/docs/imports/runtime) を利用した関数を自作し、それをモジュールとしてインポートするポリシーコードを実装してみます。 \
 `runtime` インポートの機能として、`runtime.version` により `sentinel` コマンドが実行されている環境（Sentinel ランタイム）のバージョン情報を取得することができます。\
 これを利用して、Sentinel バージョンが想定されたバージョンであるかをチェックするためのポリシーコードを実装してみましょう。
 
