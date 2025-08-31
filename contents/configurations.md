@@ -60,7 +60,7 @@ policy "remote" {
 }
 EOF
 
-$ sentinel apply
+$ sentinel apply -trace
 ```
 
 また、HashiCorp がメンテナンスを行う GitHub リポジトリでは、主要クラウド環境向けの事前定義済みポリシーが用意されています。 \
