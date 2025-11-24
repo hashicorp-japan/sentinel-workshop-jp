@@ -30,7 +30,7 @@ HashiCorp Enterprise 製品との親和性が高い機能を持ち合わせて�
 * [Tests 1: 設定ファイル](contents/test-configuration.md)
 * [Tests 2: mocking data](contents/test-mock-data.md)
 * [Tests 3: mocking modules](contents/test-mock-modules.md)
-* [Tests 4: mocking terraform contexts](contents/test-mock-tf.md)
+* [Terraform contexts](contents/terraform-contexts.md)
 * [Terraform 連携](contents/terraform-integrations.md)
 * [Vault 連携](contents/vault-integrations.md)
 * [Consul 連携](contents/consul-integrations.md)
