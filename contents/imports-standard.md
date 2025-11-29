@@ -40,11 +40,23 @@ import "json"
 resp = http.get("https://ifconfig.io/all.json")
 r = json.unmarshal(resp.body)
 
+// trace 用に出力する
+print(r)
+
 main = rule {
     r.country_code == "JP"
 }
 EOF
 ```
+
+これを `-trace` オプション付きでポリシー評価することで挙動を確認します。
+
+```shell
+$ sentinel apply -trace standard-import.sentinel
+```
+
+出力結果を確認することで、Sentinel コードによって、外部 API からの JSON レスポンスを操作できていることがわかります。\
+さらに、`main` ルール内で評価する `r.country_code` の値を `JP` 以外に設定し、再度ポリシー評価を行うと、`sentinel apply` の結果が FAIL することも確認できるかと思います。
 
 また、Standard Import の際に、パラメータをオーバーライドすることで、デフォルトの挙動から変更することが可能です。 \
 以下は、デフォルトでは UTC となっている [`time`](https://developer.hashicorp.com/sentinel/docs/imports/time) を JST に変更する場合の例となります。
