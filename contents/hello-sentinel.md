@@ -17,8 +17,8 @@ Sentinel v0.40.0
 次に任意の作業用ディレクトリを作ります。
 
 ```shell
-$ mkdir -p sentinel-workspace/hello-sentinel
-$ cd sentinel-workspace/hello-sentinel
+$ mkdir -p sentinel-policies/hello-sentinel
+$ cd sentinel-policies/hello-sentinel
 ```
 
 早速このフォルダに Sentinel のポリシーファイルを作ってみます。 \

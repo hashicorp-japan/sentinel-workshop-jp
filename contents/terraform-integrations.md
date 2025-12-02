@@ -11,6 +11,10 @@ Sentinel は HashiCorp 製品全般との親和性高く開発されています
 * CIDR やネットワーク設定の確認
 * 特定リソースの利用禁止
 
+これまでの章では、いずれも開発者のローカル環境で `sentinel.hcl` を作成し、ポリシー評価を行っていました。\
+HCP Terraform との連携においては、Sentinel の実行環境が開発者のローカルではなく、HCP Terraform 上で行われる形になります。\
+これにより、Sentinel によるポリシー評価（`sentinel apply` コマンド）は plan と apply との間で行われ、ポリシーコードから Plan/State/Configuration/Workspace/Apply のデータを活用することが容易にできるようになります。
+
 ここでは、実際に HCP Terraform で Terraform コードを作成し、ポリシーを適用後、Run（`terraform plan`）を実行してみて、Sentinel がどのように連携するかを実際に試してみましょう。
 
 ## Implement Terraform code
@@ -117,6 +121,17 @@ test {
 EOF
 ```
 
+Sentinel 設定ファイルに作成した restrict-short-random-string というポリシーを advisory レベルで適用します。
+
+```shell
+% cat >> sentinel.hcl <<EOF
+policy "restrict-short-random-string" {
+    source            = "./restrict-short-random-string.sentinel"
+    enforcement_level = "advisory"
+}
+EOF
+```
+
 そして先ほどダウンロードした mock をテスト設定ファイルで指定したパスへ取り込みます。\
 今回は `terraform plan` 時に HCP Terraform 上で実行されている Terraform コードにアクセスするため、`tfconfig/v2` を利用します。
 現時点でのディレクトリ構成としては以下のようになっているはずです。
@@ -129,6 +144,7 @@ EOF
 ├── main.tf
 ├── # ...
 ├── restrict-short-random-string.sentinel
+├── sentinel.hcl
 └── test/
     ├── # ...
     └── restrict-short-random-string/
@@ -163,23 +179,99 @@ EOF
 現在は PASS のテストケース分のみしか mock のダウンロードおよびテスト設定ファイルを作成していないですが、テストが通ることがわかります。
 
 ## Policy Sets
-これまでの章では、いずれも開発者のローカル環境で `sentinel.hcl` を作成し、ポリシー評価を行っていました。\
-HCP Terraform との連携においては、Sentinel の実行環境が開発者のローカルではなく、HCP Terraform 上で行われる形になります。
-
-これにより、Sentinel と HCP Terraform とがシームレスに連携するだけでなく、以下のようなメリットをもたらします。
+前述の通り、Sentinel と HCP Terraform とがシームレスに連携するだけでなく、以下のようなメリットをもたらします。
 - ポリシーリポジトリと VCS 連携することにより、ポリシーコードのバージョン管理が可能に
 - Sentinel 設定ファイルと HCP Terraform とを紐づける `Policy Sets` による柔軟なポリシー適用パターンの実現
 
 Policy Set は Sentinel の HCP Terraform 連携において非常に重要な役割を持ちます。\
 Policy Set は **ポリシーをグルーピングするための HCP Terraform 上の概念であり、実際のポリシーコードと Project/Workspace との橋渡し**を行う役割があります。
 
-ここまでの章で実装してきたあなたの Sentinel コードやテストコード、設定ファイルを、独立した GitHub リポジトリに push して、HCP Terraform から Policy Set を介して連携してみましょう。
+ここまでの章で実装してきたあなたのポリシーコードやテストコード、設定ファイルを、独立した GitHub リポジトリに push して、HCP Terraform から Policy Set を介して連携してみましょう。\
 
+```shell
+$ echo "# sentinel-policies" >> README.md
+$ export GITURL=<YOUR_GIT_REPO_URL>
 
+$ git init
+$ git add .
+$ git commit -m "First commit"
+$ git branch -M main
+$ git remote add origin ${GITURL}
+$ git push -u origin main
+```
+
+次に HCP Terraform 側の設定です。トップ画面メニューの一覧から `Settings` を選択し、
+
+![Navigation to Policy Set 1](../assets/images/sentinel-policy-set-ui-1.png)
+
+Integrations カテゴリ内の `Policy Sets` を選び`Connect a new Policy Set` をクリックします。
+
+![Navigation to Policy Set 2](../assets/images/sentinel-policy-set-ui-2.png)
+
+`Connect a Policy Set` で先程 GitHub 上で作った `sentinel-policies` のレポジトリを選択します。\
+なお、Policy Set Source について、ここでは VCS（`Version control system (VCS) provider`）を選択していますが、他のオプションについても提供されています。
+- `Individually managed policies`
+  - UI 上で手動ですべての操作を行う場合
+  - ポリシーコードも UI 上で作成することができるため、UI 上で作成されたポリシーを束ねるようなユースケースで利用する
+- `Automated`
+  - [HCP Terraform の API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets) 経由で操作を行う場合
+
+![Navigation to Policy Set 3](../assets/images/sentinel-policy-set-ui-3.png)
+
+Policy Set の設定詳細画面は以下のようになっています。名前などは任意で構いません。 \
+`Scope of policies` では、HCP Terraform 上の Project や Workspaces を選択することにより、Policy Set の適用範囲を設定することができます。\
+ここでは、先ほど random Provider を用いて plan を行なった Workspace（`HCP_WORKSPACE_NAME`）を設定してみましょう。
+
+![Navigation to Policy Set 4](../assets/images/sentinel-policy-set-ui-4.png)
+
+`Next` をクリックすると、以下のような Policy Set source の選択画面となります。\
+HCP Terraform では外部の VCS 上のソースを取得する際には VCS Provider を介して接続を行います。\
+VCS Provider を経由して、先ほど Push したリポジトリを選択しましょう。
+
+![Navigation to Policy Set 5](../assets/images/sentinel-policy-set-ui-5.png)
 
 ## Policy enforcement on HCP
 最後に、HCP Terraform においてポリシー評価される様子を見てみましょう。\
+先ほど plan した Terraform コードを再度 plan して挙動を見てみましょう。
 
+![Sentinel Policy Check - Pass](../assets/images/sentinel-policy-check-1.png)
+
+最初に plan した時とは異なり、Policy Check のステップが追加され、ポリシー評価が PASS の結果となっていることがわかります。
+
+次にコードを修正し、再度 Policy Check をしてみます。\
+適用されているポリシーは「`random_string` リソースの `length` の値が 16 以上の場合には PASS, 15 以下の場合には FAIL」というロジックであったため、\
+Terraform コード `main.tf` を以下のように変更し再度、plan を実行してみましょう。
+
+```hcl
+terraform {
+  cloud {
+    organization = "hwakabh-dev"
+    workspaces {
+      name = "learn-null-provider"
+    }
+  }
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
+    }
+  }
+}
+
+resource "random_string" "random" {
+  // length = 16 から修正
+  length           = 8
+  special          = true
+}
+```
+
+意図的にポリシー違反をするように Terraform コードを変更しているため、Policy Check での出力結果が以下のようになっていることが確認できるかと思います。\
+今回は Advisory レベルでの適用のため、このまま apply に進むことができますが、\
+soft-mandatory レベルの場合には権限を持ったユーザからの承認によってのみ apply 可能、\
+hard-mandatory レベルの場合には Terraform コード側を Policy に準拠するように修正するまでは apply 不可、\
+というような形でポリシーの持つ強制力を要件に合わせて調整することも可能です。
+
+![Sentinel Policy Check - Advisory](../assets/images/sentinel-policy-check-2.png)
 
 ## 参考リンク
 - [Generate mock Sentinel data with Terraform](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/policy-enforcement/test-sentinel)
