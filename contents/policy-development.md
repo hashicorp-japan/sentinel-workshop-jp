@@ -125,5 +125,7 @@ CI パイプライン上でリポジトリ内の全てのポリシーをテス�
 sentinel test ./policies/*
 ```
 
-## 参考リンク
-- [VS Code Plugin](https://marketplace.visualstudio.com/items?itemName=HashiCorp.sentinel)
+## Editor plugins & SDKs
+- [VSCode Plugin](https://marketplace.visualstudio.com/items?itemName=HashiCorp.sentinel)
+- [Vim plugin](https://github.com/hashicorp/sentinel.vim)
+- [Sentinel SDK](https://github.com/hashicorp/sentinel-sdk)
