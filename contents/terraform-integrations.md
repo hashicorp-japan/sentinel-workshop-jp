@@ -15,6 +15,8 @@ Sentinel は HashiCorp 製品全般との親和性高く開発されています
 HCP Terraform との連携においては、Sentinel の実行環境が開発者のローカルではなく、HCP Terraform 上で行われる形になります。\
 これにより、Sentinel によるポリシー評価（`sentinel apply` コマンド）は plan と apply との間で行われ、ポリシーコードから Plan/State/Configuration/Workspace/Apply のデータを活用することが容易にできるようになります。
 
+![Sentinel and Terraform](../assets/images/sentinel-and-terraform.png)
+
 ここでは、実際に HCP Terraform で Terraform コードを作成し、ポリシーを適用後、Run（`terraform plan`）を実行してみて、Sentinel がどのように連携するかを実際に試してみましょう。
 
 ## Implement Terraform code
