@@ -1,13 +1,27 @@
 # ポリシーコードの開発
 
+お疲れ様でした、ここまでの章で HCP Terraform を中心に、様々な HashiCorp プロダクトと Sentinel の連携や、実際のポリシーコードの開発方法を学習してきました。\
+最終週であるこの章では、これまでの内容を振り返りつつ、大規模なポリシーの開発の中で設計上重要となるポイントについて触れていきます。
+
 ## Development digests
+ここまでのまとめにもなりますが、Sentinel でのポリシー開発は以下のような大きな流れを踏む形になります。
 
+1. クラウドリソースを作成する Terraform コードを作成
+2. Terraform コードが実行される HCP Terraform の Workspace を作成
+3. `terraform plan` を実行
+4. HCP Terraform UI の plan 結果から mock を生成・ダウンロード
+5. Sentinel ポリシーコードを作成
+6. ポリシーに対するテストケースを作成し、`sentinel test` コマンドを利用してテストを実施
+7. 想定されうるテストケースすべてが PASS することを確認
+8. `Policy Sets` を通じて HCP Terraform へポリシーを適用
 
-## Directory layouts
 通常、インフラ構成を定義した Terraform コードが格納されるリポジトリと、Sentinel のポリシーコードが格納されるリポジトリとは、以下のような理由からそれぞれ独立してメンテナンスを行われます。
 - インフラ構成のライフサイクルとポリシー定義のライフサイクルとは一般的に異なり、これらが依存し合わないようにするため
 - Terraform 開発者と Sentinel 開発者との主管範囲や責務が異なるため
 
+![Development Workflows](../assets/images/development-workflows.png)
+
+## Directory layouts
 ポリシーコードのリポジトリ構成に、フレームワークのような厳密な制約はありませんが、以下のような形が取られることが多いです。
 
 ```shell
@@ -33,7 +47,7 @@
 │   │   # ...
 │   ├── hcl/
 │   └── hcp-terraform/
-├── policy-sets/                # 適用対象のポリシーのセット定義
+├── policy-sets/                # 適用対象のポリシーセット定義
 │   ├── develop/
 │   │   └── sentinel.hcl
 │   └── global/
@@ -42,16 +56,17 @@
 └── .gitignore
 ```
 
-- **`policies/`**
-  - クラウドプロバイダごとに整理された Sentinel ポリシーファイルのサブディレクトリを保持するトップレベルディレクトリ
-  - ユニットテストも含まれます
-- **`policy-sets/`**
-  - 特定のポリシーセットを表すサブディレクトリを含むトップレベルディレクトリ
-  - ポリシーセットは HCP Terraform に接続されるために必要となります
+- **`imports/`**
+  - Sentinel ポリシーがインポートして評価することができる static import データを含むトップレベルディレクトリ
 - **`functions/`**
   - Sentinel ポリシーファイルにインポートしてポリシー開発を容易にする「ヘルパー」（再利用可能）関数を含むトップレベルディレクトリ
-- **`imports/`**
-  - Sentinel ポリシーがインポートして評価することができる静的インポートデータを含むトップレベルディレクトリ
+  - module import される対象となる `.sentinel` ファイルが格納されることが多いです
+- **`policies/`**
+  - クラウドプロバイダごとに整理された Sentinel ポリシーファイルのサブディレクトリを保持するトップレベルディレクトリ
+  - 各種ポリシーに対応するテスト設定や mock などもこの中に含まれます
+- **`policy-sets/`**
+  - 特定のポリシーセットを表すサブディレクトリを含むトップレベルディレクトリ
+  - ポリシーセットは要件に合わせて柔軟に構成可能ですが、後述の Policy Graduation のアプローチを取られることが多いです
 
 ## Policy Graduations
 Policy の開発においても、一般的なアプリケーション開発や Terraform コード開発のように適用範囲を段階的に広げていく開発アプローチを取りたいケースは多いかと思います。
@@ -73,8 +88,7 @@ Policy の開発においても、一般的なアプリケーション開発や 
 Policy Set の柔軟さによりアプリケーション開発などと同様の開発/リリースフローを維持することができるという側面も持っています。
 
 ## Naming conventions
-
-Policy Names
+ポリシーの命名規則は簡潔でわかりやすいものを利用することが望ましく、以下が代表的なものとなります。
 - `enforce-*`
   - 必要または強制により何かを実行させる。
   - パターンや戦略を強制する
@@ -85,27 +99,31 @@ Policy Names
   - 制限を設けて、管理下に置く。
   - プロパティの値を設定できる/できないように制限する
 
-Test files
-- 特定のポリシーに対するテストを `policies/<クラウドプロバイダ>/test/<ポリシー名>/` フォルダ内に作成します。
-- テストケースファイル（`*.hcl`）は `"test-*"` というプレフィックスで命名します。
-- モックデータファイル（`*.sentinel`）は `"mock-*"` というプレフィックスで命名します。
+これは、**1 Policy は 1 ロジック** を原則としてポリシー自体はシンプルに保ちつつも、多様なポリシーを Policy Set により柔軟に適用させるという Sentinel の設計指針にも関連があります。\
+ポリシーの実装において最も重要なことは、ポリシーが読みやすく、理解しやすく、問題が発生してもコンテキスト切り替えが不要であることです。
 
+Sentinel のテストに関連するファイルについては、以下のような規則が利用されることが多いです。
+- テストケースファイル（`*.hcl`）は `test-*` というプレフィックス
+- mock データファイル（`*.sentinel`）は `mock-*` というプレフィックス
+
+また、最低限、1つのポジティブ（PASS）テストケースと1つのネガティブ（FAIL）テストケースを含めることが望ましいです。
 
 ## CI
-`hashicorp/setup-sentinel`
+一般的なアプリケーション開発同様に、ポリシーリポジトリにおいても CI 上での自動化を行うことにより開発効率の向上を図ることも可能です。\
+パイプラインジョブの代表的な実装例としては以下のようなものがあります。
 
-リポジトリ内の全てのポリシーをテストする場合:
+フォーマットを行う場合:
+
+```shell
+find . -name "*.sentinel" -type f | xargs sentinel fmt
+```
+
+CI パイプライン上でリポジトリ内の全てのポリシーをテストする場合
+- GitHub Actions を利用する場合には、[`hashicorp/setup-sentinel`](https://github.com/hashicorp/setup-sentinel) が利用可能です
 
 ```shell
 sentinel test ./policies/*
 ```
-
-Sentinel CLI にはネイティブの再帰的フォーマットオプションはありませんが、次のような方法で対応できます：
-
-```sh
-find . -name "*.sentinel" -type f | xargs sentinel fmt
-```
-
 
 ## 参考リンク
 - [VS Code Plugin](https://marketplace.visualstudio.com/items?itemName=HashiCorp.sentinel)
