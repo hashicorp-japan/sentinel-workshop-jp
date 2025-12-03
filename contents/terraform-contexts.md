@@ -121,7 +121,12 @@ main = rule {
 EOF
 ```
 
-このポリシー評価してみると、PASS の出力となることがわかるかと思います。\
+このポリシー評価してみると、PASS の出力となることがわかるかと思います。
+
+```shell
+% sentinel apply -trace ensure-random-id-in-state.sentinel
+```
+
 これは、実装した Sentinel ポリシーの中で `tfstate/v2` import を利用することにより、state ファイルにアクセスが行われたことを意味しています。
 
 `tfstate/v2`, `tfplan/v2`, `tfconfig/v2`, `tfrun` といった Terraform のコンテキストにアクセスすることができる imports は非常に強力で、ポリシーでの評価対象を拡張するだけでなく、\
