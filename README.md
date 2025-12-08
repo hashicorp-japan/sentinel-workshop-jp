@@ -10,11 +10,16 @@ HashiCorp Enterprise 製品との親和性が高い機能を持ち合わせて�
 ## Pre-requisite
 
 * 環境
-	* macOS or Linux(Ubuntu 推奨)
+	* macOS or Linux (Ubuntu 推奨)
 
 * ソフトウェア
 	* Sentinel
 	* HCP Terraform
+	* Vault
+	* Consul
+	* Nomad
+	* Docker
+	* jq, curl
 
 * アカウント
 	* GitHub
