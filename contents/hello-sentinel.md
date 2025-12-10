@@ -46,7 +46,7 @@ EOF
 	* 実行は許可するが、警告を出すモード
 
 つまり、この `sentinel.hcl` は、Sentinel によるポリシーコード評価の挙動を決定する Sentinel 自身の設定ファイルと考えることができます。 \
-Sentinel の設定ファイルに関しては、[Sentinel 設定ファイル](contents/configurations.md) のワークショップも併せて参考にしてください。
+Sentinel の設定ファイルに関しては、[Sentinel 設定ファイル](configurations.md) のワークショップも併せて参考にしてください。
 
 
 * `<POLICYNAME>.sentinel` の作成
