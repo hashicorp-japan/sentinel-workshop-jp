@@ -40,10 +40,7 @@ Key                          Value
 ---                          -----
 expiration_time              2025-12-31T00:00:00Z
 features                     [HSM Performance Replication DR Replication MFA Sentinel Seal Wrapping Control Groups Performance Standby Namespaces KMIP Entropy Augmentation Transform Secrets Engine Lease Count Quotas Key Management Secrets Engine Automated Snapshots Key Management Transparent Data Encryption Secrets Sync Secrets Import Oracle Database Secrets Engine]
-license_id                   6a7f22a5-211c-61f6-53ce-5681b0b66513
-performance_standby_count    9999
-start_time                   2025-09-25T00:00:00Z
-termination_time             2025-12-31T00:00:00Z
+# ...
 ```
 
 それでは早速 Sentinel ポリシーを作成してみましょう。\
@@ -168,3 +165,5 @@ Rule "main" (root/disable-staled-token:4:1) = false
 - [Manage Vault policies with Sentinel](https://developer.hashicorp.com/vault/docs/enterprise/sentinel)
 - [Sentinel properties for Vault](https://developer.hashicorp.com/vault/docs/enterprise/sentinel/properties)
 - [Sentinel and Vault](https://developer.hashicorp.com/sentinel/docs/vault)
+- [Create/Update EGP policy](https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-egp-policy)
+- [Create/Update RGP policy](https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-acl-policy)
