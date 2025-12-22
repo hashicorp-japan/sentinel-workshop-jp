@@ -226,7 +226,7 @@ Token に `-policy` オプションで RPGs の名前を指定していること
 発行した２つの Token はそれぞれ token_accessor `L1ms1cOTWnJyKFSASvHVKSuL` および `WnVaxMSQ9ZLu7AtkQqw51o0N` で一意に特定することが可能であり、片方は `application_type=batch` という Token metadata を持っています。\
 また、いずれも RPGs の他に、`default` ACL Policy も付与されているため、ACL Policy の世界においては `vault token lookup` コマンドが実行可能であることが期待されます。
 
-いずれも Token 作成時の有効期限はデフォルトの 768h（32日間）であり、token_accessor `WnVaxMSQ9ZLu7AtkQqw51o0N` を持つ Token については `enforce-token-ttl-application-type` で実装した Sentinel ポリシーに準拠していない状態になっています。\
+いずれも Token 作成時の有効期限はデフォルトの 768h（32 日間）であり、token_accessor `WnVaxMSQ9ZLu7AtkQqw51o0N` を持つ Token については `enforce-token-ttl-application-type` で実装した Sentinel ポリシーに準拠していない状態になっています。\
 このため、token_accessor `WnVaxMSQ9ZLu7AtkQqw51o0N` を持つ Token で `vault token lookup`（`read auth/token/lookup`）を実行した際には、
 - ACL Policy `default` には準拠する
 - Sentinel Policy（RGPs）`enforce-token-ttl-application-type` には準拠しない
