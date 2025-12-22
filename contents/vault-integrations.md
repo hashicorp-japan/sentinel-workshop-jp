@@ -188,6 +188,7 @@ EGPs を登録する際同様に、base64 する点については共通です�
 % vault write sys/policies/rgp/enforce-token-ttl-application-type \
 policy=$(base64 -i enforce-token-ttl-application-type.sentinel) \
 enforcement_level="hard-mandatory"
+Success! Data written to: sys/policies/rgp/enforce-token-ttl-application-type
 ```
 
 次に、RGPs の評価対象となる Token のうち、Root Token（或いは `root` ポリシーが適用されている Token）以外の２つの Token を作成しておきます。\
