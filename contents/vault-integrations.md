@@ -23,12 +23,12 @@ EGPs/RGPs ともに、Sentinel ポリシーは Vault が標準的にもつ ACL P
 (ACL Policy は Vault が発行する Token に紐づいたアクセス制御を行います)
 
 また、Vault では最も強力な権限である Root Token を利用することもできますが、EGPs, RGPs ともに Root Token に対しては評価が行われない点についても留意するようにしてください。\
-（Root Token は原則的に初回の構築時に利用後に失効させ、必要となったタイミングで適切なプロセスを経た上で再発行することが推奨です）
+Root Token は原則的に初回の構築時に利用後に失効させ、必要となったタイミングで適切なプロセスを経た上で再発行することが推奨です。[参考](https://developer.hashicorp.com/vault/docs/concepts/production-hardening#baseline-recommendations)
 
 
 ## EGPs
 まずは Vault への認証有無を問わず利用することができる EGPs から実際に試してみましょう。 \
-Vault サーバを起動後、Sentinel Policy と連携する Enterprise ライセンスが適用されているかを確認します。
+Vault サーバを起動後、Sentinel ポリシーと連携するために必要な Enterprise ライセンスが適用されているかを確認します。
 
 ```shell
 % export VAULT_LICENSE_PATH="$HOME/vault.hclic"
@@ -48,7 +48,7 @@ features                     [HSM Performance Replication DR Replication MFA Sen
 
 それでは早速 Sentinel ポリシーを作成してみましょう。\
 ここでは、[time](https://developer.hashicorp.com/sentinel/docs/imports/time) import を利用して、ある時刻以前に発行された Token 以外はすべて利用不可とするような Sentinel ポリシーを記述してみましょう。\
-（これは Break-glass と呼ばれる Vault への侵害が疑われた際の対処としても利用することができます）
+（これは Break-glass Scenarios と呼ばれる Vault への侵害が疑われた際の対処としても利用することができます）
 
 なお、今回は `token` プロパティを参照していますが、 Sentinel コードからは様々な Vault のプロパティにアクセスすることが可能です。
 
@@ -230,7 +230,7 @@ Token に `-policy` オプションで RPGs の名前を指定していること
 いずれも Token 作成時の有効期限はデフォルトの 768h（32 日間）であり、token_accessor `WnVaxMSQ9ZLu7AtkQqw51o0N` を持つ Token については `enforce-token-ttl-application-type` で実装した Sentinel ポリシーに準拠していない状態になっています。\
 このため、token_accessor `WnVaxMSQ9ZLu7AtkQqw51o0N` を持つ Token で `vault token lookup`（`read auth/token/lookup`）を実行した際には、
 - ACL Policy `default` には準拠する
-- Sentinel Policy（RGPs）`enforce-token-ttl-application-type` には準拠しない
+- Sentinel ポリシー（RGPs）`enforce-token-ttl-application-type` には準拠しない
 
 形となり、リクエストはエラーとなることが期待されます。\
 Token の値を切り替えながら実際に試してみましょう。
