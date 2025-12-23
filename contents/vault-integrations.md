@@ -1,6 +1,6 @@
 # Vault 連携
 Vault Enterprise では、Vault のポリシー制御の機構として ACL Policy の他に、Sentinel ポリシーを利用することができます。 \
-HCL で記述される ACL Policy では `path` および `capabilities` を軸としてシンプルかつ強力な RBAC を Vault で実現することができますが、Sentinel と Vault とを連携させることによりより高度なポリシーロジックを実装することができます。
+HCL で記述される ACL Policy では `path` および `capabilities` を軸としてシンプルかつ強力な RBAC を Vault で実現することができますが、Sentinel と Vault とを連携させることにより高度なポリシーロジックを実装することができます。
 
 Vault では Sentinel は完全にサポートされており、Sentinel から Vault の情報にアクセス可能で、`hard-mandatory`, `soft-mandatory`, `advisory` すべての Enforcement Level を利用可能です。\
 Enforcement Level を指定し Sentinel ポリシーを Vault に設定することにより、Vault のユーザからのリクエストのタイミングで内容に応じたポリシーの評価を実現することができるようになります。
