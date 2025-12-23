@@ -170,7 +170,7 @@ RGPs ではパスに対するポリシー指定を行う EGPs とは異なり、
 (Token 発行時の `token_duration` が 86400s = 24h 以下の場合には FAIL となる)
 
 ```shell
-% cat >> enforce-token-ttl-batch-application-type.sentinel <<EOF
+% cat >> enforce-token-ttl-application-type.sentinel <<EOF
 # this policy enforce TTL shorter than 24h with token having application_type fields
 precond = token.meta.application_type is defined
 
