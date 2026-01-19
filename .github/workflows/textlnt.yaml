@@ -12,18 +12,17 @@ permissions:
 
 jobs:
   textlint-ja:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
-
-      - name: Install textlint rules
-        run: npm install -D textlint textlint-rule-preset-ja-spacing
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Run textlint
         run: |
-          export PATH="$PATH:$(npm root)/.bin"
-          textlint README.md ./contents/**/*.md
+          npm install textlint textlint-rule-preset-ja-spacing
+          npx textlint README.md "./contents/**/*.md"
