@@ -2,6 +2,7 @@
 # // spellchecker:disable-line を行末に入れるとチェックを回避
 extend-ignore-re = [
     "(?Rm)^.*(#|//)\\s*spellchecker:disable-line$",
+    "hvs\\.[a-zA-Z0-9_-]+"
 ]
 
 [default.extend-words]
