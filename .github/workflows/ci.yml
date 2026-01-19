@@ -7,13 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. リンク切れチェック
+  # 1. リンク切れチェック (checkoutをv4に変更)
   link-check:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
@@ -21,25 +21,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-  # 2. タイポチェック
+  # 2. タイポチェック (ここもcheckoutをv4へ)
   typos-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - name: Typos source code spell checker
         uses: crate-ci/typos@master
 
-  # 3. 表記揺れチェック (Textlint)
+  # 3. 表記揺れチェック
   textlint-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.13.0'
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
+          node-version: '20'
+
+      - name: Install textlint rules
+        run: npm install textlint textlint-rule-preset-ja-spacing textlint-rule-preset-japanese
+
       - name: Run textlint
         run: npx textlint --config .textlintrc.json '**/*.md'
