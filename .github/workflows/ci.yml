@@ -1,0 +1,45 @@
+name: CI Checks
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # 1. リンク切れチェック
+  link-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress './**/*.md'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  # 2. タイポチェック
+  typos-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Typos source code spell checker
+        uses: crate-ci/typos@master
+
+  # 3. 表記揺れチェック (Textlint)
+  textlint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.13.0'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run textlint
+        run: npx textlint --config .textlintrc.json '**/*.md'

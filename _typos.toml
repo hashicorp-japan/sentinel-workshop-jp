@@ -1,0 +1,21 @@
+[default]
+# // spellchecker:disable-line を行末に入れるとチェックを回避
+extend-ignore-re = [
+    "(?Rm)^.*(#|//)\\s*spellchecker:disable-line$",
+]
+
+[default.extend-words]
+HashiCorp  = "HashiCorp"
+Hashi      = "Hashi"
+Terraform  = "Terraform"
+Vault      = "Vault"
+Consul     = "Consul"
+Nomad      = "Nomad"
+Vagrant    = "Vagrant"
+Packer     = "Packer"
+Boundary   = "Boundary"
+Waypoint   = "Waypoint"
+HCL        = "HCL"
+Sentinel   = "Sentinel"
+HCP        = "HCP"
+InfraGraph = "InfraGraph"
