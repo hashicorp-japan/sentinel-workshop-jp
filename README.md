@@ -19,7 +19,7 @@ HashiCorp Enterprise 製品との親和性が高い機能を持ち合わせて�
 	* Consul
 	* Nomad
 	* Docker
-	* jq, curl
+	* jq, cURL
 
 * アカウント
 	* GitHub
