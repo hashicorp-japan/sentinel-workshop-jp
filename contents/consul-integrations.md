@@ -267,4 +267,4 @@ Sentinel と併用することにより Consul の ACL Policy を拡張し、Con
 
 ## 参考リンク
 - [Enforce ACL Policies with Sentinel](https://developer.hashicorp.com/consul/docs/secure/acl/sentinel)
-- [Store and access key/value store](https://developer.hashicorp.com/consul/docs/automate/kv/store)
+- [Store and access key-value store](https://developer.hashicorp.com/consul/docs/automate/kv/store)
