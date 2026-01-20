@@ -166,7 +166,7 @@ Rule "main" (root/disable-staled-token:4:1) = false
 RGPs ではパスに対するポリシー指定を行う EGPs とは異なり、ACL Policy のように Vault への認証が完了した Vault クライアントの属性などに応じたポリシーの実装が可能です。
 
 早速、RGPs として利用する Sentinel ポリシーを実装してみましょう。\
-ここでは、`token` ブロパティの `metadata` の値に応じた Senitnel ポリシーを実装し、`application_type` という特定の metadata を持つ Token に対してのみ、作成時の TTL をチェックするような RGPs を実装してみます。\
+ここでは、`token` ブロパティの `metadata` の値に応じた Sentinel ポリシーを実装し、`application_type` という特定の metadata を持つ Token に対してのみ、作成時の TTL をチェックするような RGPs を実装してみます。\
 (Token 発行時の `token_duration` が 86400s = 24h 以下の場合には FAIL となる)
 
 ```shell
