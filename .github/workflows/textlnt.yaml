@@ -17,17 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2026年現在、Node.js 20系は安定版として広く使われています
       - name: Setup Node.js
+
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm' # キャッシュを有効にすると2回目以降の実行が速くなります
+          cache: 'npm' 
 
       - name: Install dependencies
-        # package-lock.jsonを元に厳密にインストール
         run: npm ci
 
       - name: Run textlint
-        # package.jsonのscriptsに定義した lint を実行
         run: npm run lint

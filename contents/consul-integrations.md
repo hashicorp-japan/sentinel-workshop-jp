@@ -257,7 +257,7 @@ Error! Failed writing data: Unexpected response code: 403 (Permission denied: to
 ```
 
 上記の通り、Permission Error となることが確認できるかと思います。\
-これは、クライアントアクセス用の Token `2ac79c47-fb43-e7f5-2371-c7950c79d594` に対して、Senitnel コードを含む ACL Policy `ensure-redis-maxmemory` が適用され、Sentinel のポリシー評価が行われた結果として、`"256mb" == "1gb"` により false, 即ち FAIL になったということを意味しています。
+これは、クライアントアクセス用の Token `2ac79c47-fb43-e7f5-2371-c7950c79d594` に対して、Sentinel コードを含む ACL Policy `ensure-redis-maxmemory` が適用され、Sentinel のポリシー評価が行われた結果として、`"256mb" == "1gb"` により false, 即ち FAIL になったということを意味しています。
 
 このように、Sentinel は Consul との連携において、ACL Policy を拡張する役割を持ち、ACL Policy が制御するクライアントの Token 単位で決め細やかにガードレールを実装することが可能です。\
 Consul では ACL Policy を利用することで、Consul の各種機能への詳細なアクセス制御を実現していますが、Consul KVS は Terraform や Vault, Nomad などとも併用されるケースも多く、格納される Key-Value データの取り扱いはセキュアに行う必要があります。
@@ -267,4 +267,4 @@ Sentinel と併用することにより Consul の ACL Policy を拡張し、Con
 
 ## 参考リンク
 - [Enforce ACL Policies with Sentinel](https://developer.hashicorp.com/consul/docs/secure/acl/sentinel)
-- [Store and access key/value store](https://developer.hashicorp.com/consul/docs/automate/kv/store)
+- [Store and access key-value store](https://developer.hashicorp.com/consul/docs/automate/kv/store)

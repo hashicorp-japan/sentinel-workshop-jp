@@ -1,0 +1,52 @@
+name: CI Checks
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # 1. リンク切れチェック (checkoutをv4に変更)
+  link-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress './**/*.md'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  # 2. タイポチェック (ここもcheckoutをv4へ)
+  typos-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Typos source code spell checker
+        uses: crate-ci/typos@master
+
+  # 3. 表記揺れチェック
+  textlint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.20.0'
+
+      - name: Install textlint and rules
+        run: |
+          if [ ! -f package.json ]; then npm init -y; fi
+
+          npm install textlint \
+                      textlint-rule-ja-space-between-half-and-full-width \
+                      textlint-rule-terminology
+
+      - name: Run textlint
+        run: npx textlint --config .textlintrc.json "**/*.md"

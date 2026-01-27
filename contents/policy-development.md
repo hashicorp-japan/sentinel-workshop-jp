@@ -126,6 +126,6 @@ sentinel test ./policies/*
 ```
 
 ## Editor plugins & SDKs
-- [VSCode Plugin](https://marketplace.visualstudio.com/items?itemName=HashiCorp.sentinel)
+- [Visual Studio Code Plugin](https://marketplace.visualstudio.com/items?itemName=HashiCorp.sentinel)
 - [Vim plugin](https://github.com/hashicorp/sentinel.vim)
 - [Sentinel SDK](https://github.com/hashicorp/sentinel-sdk)
