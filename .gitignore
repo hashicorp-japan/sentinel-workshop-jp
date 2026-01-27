@@ -1,2 +1,4 @@
 .idea
 .sentinel
+node_modules/
+.textlintcache

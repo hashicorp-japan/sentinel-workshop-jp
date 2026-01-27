@@ -12,18 +12,22 @@ permissions:
 
 jobs:
   textlint-ja:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
+      # 2026年現在、Node.js 20系は安定版として広く使われています
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm' # キャッシュを有効にすると2回目以降の実行が速くなります
 
-      - name: Install textlint rules
-        run: npm install -D textlint textlint-rule-preset-ja-spacing
+      - name: Install dependencies
+        # package-lock.jsonを元に厳密にインストール
+        run: npm ci
 
       - name: Run textlint
-        run: |
-          export PATH="$PATH:$(npm root)/.bin"
-          textlint README.md ./contents/**/*.md
+        # package.jsonのscriptsに定義した lint を実行
+        run: npm run lint
