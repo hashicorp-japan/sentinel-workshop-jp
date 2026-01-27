@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seigok/sentinel-workshop-jp.git"
+    "url": "git+https://github.com/hashicorp-japan/sentinel-workshop-jp.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/seigok/sentinel-workshop-jp/issues"
+    "url": "https://github.com/hashicorp-japan/sentinel-workshop-jp/issues"
   },
-  "homepage": "https://github.com/seigok/sentinel-workshop-jp#readme",
+  "homepage": "https://github.com/hashicorp-japan/sentinel-workshop-jp#readme",
   "devDependencies": {
     "textlint": "^15.5.1",
     "textlint-rule-ja-space-between-half-and-full-width": "^2.4.2",
