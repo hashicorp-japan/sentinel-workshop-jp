@@ -9,7 +9,7 @@ Please feel free to use it for reducing your time.
 
 ## Pull Requests
 The preferred way to contribute is to fork the [main repository](https://github.com/hashicorp-japan/sentinel-workshop-jp) on GitHub.
-The brief procedures to fork this repo are described below, still we are also welcome if you would directly make PRs within this repository instead of forking.
+The brief procedures to fork this repository are described below, still we are also welcome if you would directly make PRs within this repository instead of forking.
 
 1. Fork the [main repository](https://github.com/hashicorp-japan/sentinel-workshop-jp).  Click on the 'Fork' button near the top of the page.  This creates a copy of the code under your account on the GitHub server.
 
@@ -35,7 +35,7 @@ $ git commit
 $ git push -u origin ${YOUR_BRANCH_NAME}
 ```
 
-6. Finally, go to the web page of your fork of the `sentinel-workshop-jp` repo and click 'Pull Request' to send your changes for review.
+6. Finally, go to the web page of your fork of the `sentinel-workshop-jp` repository and click 'Pull Request' to send your changes for review.
 
 ### GitHub Pull Requests Docs
 If you are not familiar with pull requests, review the [pull request docs](https://help.github.com/articles/using-pull-requests/).
